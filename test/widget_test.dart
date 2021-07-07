@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_app_test/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Go to the next 2 pages and get back home', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
     await tester.pumpAndSettle();
