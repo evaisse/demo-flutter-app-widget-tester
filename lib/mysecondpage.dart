@@ -68,17 +68,10 @@ class _MySecondPageState extends State<MySecondPage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
             ElevatedButton(
                 key: Key('nextPage'),
                 onPressed: () {
-                  Get.toNamed('/');
+                  Navigator.pushNamed(context, '/');
                 },
                 child: Text('Back to home'))
           ],

@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 
 import 'counter_controller.dart';
 
-class MyCounterPage extends StatelessWidget {
-  MyCounterPage({Key? key, this.title = 'Coucou'}) : super(key: key);
+
+class MyCounterPage extends StatefulWidget {
+  MyCounterPage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -19,9 +20,25 @@ class MyCounterPage extends StatelessWidget {
   final String title;
 
   @override
-  Widget build(BuildContext context) {
-    final CounterController c = Get.put(CounterController());
+  _MyCounterPageState createState() => _MyCounterPageState();
+}
 
+class _MyCounterPageState extends State<MyCounterPage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -32,7 +49,7 @@ class MyCounterPage extends StatelessWidget {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(title, key: Key('title')),
+        title: Text(widget.title, key: Key('title')),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -57,15 +74,17 @@ class MyCounterPage extends StatelessWidget {
             Text(
               'You have pushed the button this many times:',
             ),
-            Obx(() => Text("Clicks: ${c.count}",
-                style: Theme.of(context).textTheme.headline4)),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
             ElevatedButton(
                 key: Key('nextPage'),
                 onPressed: () {
-                  if (title == 'Coucou') {
-                    Get.toNamed('/alt');
+                  if (widget.title == 'Coucou') {
+                    Navigator.pushNamed(context, '/alt');
                   } else {
-                    Get.toNamed('/second');
+                    Navigator.pushNamed(context, '/second');
                   }
                 },
                 child: Text('next page ->'))
@@ -73,7 +92,7 @@ class MyCounterPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: c.increment,
+        onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
