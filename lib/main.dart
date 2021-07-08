@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         title: 'Flutter Demo',
-        home: MyCounterPage(), // becomes the route named '/'
+        initialRoute: '/',
         getPages: [
           GetPage(name: '/', page: () => MyCounterPage()),
           GetPage(name: '/alt', page: () => MyCounterPage(title: 'alt')),
