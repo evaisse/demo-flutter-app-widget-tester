@@ -24,37 +24,37 @@ Future<String> fetchUrl(String url) async {
   return completer.future;
 }
 
-class TestWidget extends StatefulWidget {
+class DemoAsyncStatefulWidget extends StatefulWidget {
   AsyncStringFunction waitFor;
 
-  TestWidget(this.waitFor);
+  DemoAsyncStatefulWidget(this.waitFor);
 
   @override
-  _TestWidgetState createState() => _TestWidgetState();
+  _DemoAsyncStatefulWidgetState createState() => _DemoAsyncStatefulWidgetState();
 }
 
-class _TestWidgetState extends State<TestWidget> {
-  bool _isGood = false;
+class _DemoAsyncStatefulWidgetState extends State<DemoAsyncStatefulWidget> {
+  bool _isLoaded = false;
 
   onPressed() async {
     String response = await widget.waitFor();
     debugPrint('Async response : $response');
     setState(() {
-      _isGood = !_isGood;
+      _isLoaded = !_isLoaded;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Demo Async Widget tester',
       home: Scaffold(
         appBar: AppBar(
-          title: Text("zouzou"),
+          title: Text("Demo async widget"),
         ),
         body: Row(
           children: [
-            Text(_isGood ? 'goodgood' : 'badbad', key: Key('testText')),
+            Text(_isLoaded ? 'done' : 'loading', key: Key('testText')),
             ElevatedButton(
               key: Key('pressMe'),
               child: Text('press me'),
@@ -75,7 +75,7 @@ void main() async {
   testWidgets('fake async', (WidgetTester tester) async {
     await tester.runAsync(() async {
       await tester.pumpWidget(
-        TestWidget(() {
+        DemoAsyncStatefulWidget(() {
           return Future.value('foo');
         }),
       );
@@ -92,11 +92,32 @@ void main() async {
     });
   });
 
-  testWidgets('callback with real async', (WidgetTester tester) async {
+  testWidgets('callback with real async http call', (WidgetTester tester) async {
     await tester.runAsync(() async {
       await tester.pumpWidget(
-        TestWidget(() async {
+        DemoAsyncStatefulWidget(() async {
           return fetchUrl('https://httpbin.org/get?message=Hello+world');
+        }),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(Key('pressMe')), findsOneWidget);
+      expect(find.text('badbad'), findsOneWidget);
+
+      await tester.tap(find.byKey(Key('pressMe')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('goodgood'), findsOneWidget);
+    });
+  });
+
+  testWidgets('callback with IO process', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      await tester.pumpWidget(
+        DemoAsyncStatefulWidget(() async {
+          await Process.run('echo', ['hello']);
+          return 'done.';
         }),
       );
 
