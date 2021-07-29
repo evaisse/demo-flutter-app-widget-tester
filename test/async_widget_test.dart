@@ -25,7 +25,7 @@ Future<String> fetchUrl(String url) async {
 }
 
 class TestWidget extends StatefulWidget {
-  AsyncStringFunction? waitFor;
+  AsyncStringFunction waitFor;
 
   TestWidget(this.waitFor);
 
@@ -37,10 +37,8 @@ class _TestWidgetState extends State<TestWidget> {
   bool _isGood = false;
 
   onPressed() async {
-    if (widget.waitFor != null) {
-      String response = await widget.waitFor!();
-      debugPrint('Async response : $response');
-    }
+    String response = await widget.waitFor();
+    debugPrint('Async response : $response');
     setState(() {
       _isGood = !_isGood;
     });
@@ -74,7 +72,7 @@ void main() async {
     HttpOverrides.global = null;
   });
 
-  testWidgets('callback', (WidgetTester tester) async {
+  testWidgets('fake async', (WidgetTester tester) async {
     await tester.runAsync(() async {
       await tester.pumpWidget(
         TestWidget(() {
