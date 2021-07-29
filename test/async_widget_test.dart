@@ -82,13 +82,12 @@ void main() async {
 
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('pressMe')), findsOneWidget);
-      expect(find.text('badbad'), findsOneWidget);
+      expect(find.text('loading'), findsOneWidget);
 
       await tester.tap(find.byKey(Key('pressMe')));
       await tester.pumpAndSettle();
 
-      expect(find.text('goodgood'), findsOneWidget);
+      expect(find.text('done'), findsOneWidget);
     });
   });
 
@@ -102,13 +101,12 @@ void main() async {
 
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('pressMe')), findsOneWidget);
-      expect(find.text('badbad'), findsOneWidget);
+      expect(find.text('loading'), findsOneWidget);
 
       await tester.tap(find.byKey(Key('pressMe')));
       await tester.pumpAndSettle();
 
-      expect(find.text('goodgood'), findsOneWidget);
+      expect(find.text('done'), findsOneWidget);
     });
   });
 
@@ -123,13 +121,12 @@ void main() async {
 
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key('pressMe')), findsOneWidget);
-      expect(find.text('badbad'), findsOneWidget);
+      expect(find.text('loading'), findsOneWidget);
 
       await tester.tap(find.byKey(Key('pressMe')));
       await tester.pumpAndSettle();
 
-      expect(find.text('goodgood'), findsOneWidget);
+      expect(find.text('done'), findsOneWidget);
     });
   });
 }
