@@ -129,4 +129,64 @@ void main() async {
       expect(find.text('done'), findsOneWidget);
     });
   });
+
+  testWidgets('callback with IO synced', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      await tester.pumpWidget(
+        DemoAsyncStatefulWidget(() async {
+          File('pubspec.yaml').readAsStringSync();
+          return 'done.';
+        }),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('loading'), findsOneWidget);
+
+      await tester.tap(find.byKey(Key('pressMe')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('done'), findsOneWidget);
+    });
+  });
+
+  testWidgets('callback with File io as future', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      await tester.pumpWidget(
+        DemoAsyncStatefulWidget(() async {
+          await File('pubspec.yaml').readAsString();
+          return 'done.';
+        }),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('loading'), findsOneWidget);
+
+      await tester.tap(find.byKey(Key('pressMe')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('done'), findsOneWidget);
+    });
+  });
+
+  testWidgets('callback with IO process', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      await tester.pumpWidget(
+        DemoAsyncStatefulWidget(() async {
+          await Process.run('echo', ['hello']);
+          return 'done.';
+        }),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('loading'), findsOneWidget);
+
+      await tester.tap(find.byKey(Key('pressMe')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('done'), findsOneWidget);
+    });
+  });
 }
